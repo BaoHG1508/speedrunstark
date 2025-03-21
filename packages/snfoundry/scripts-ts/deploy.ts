@@ -9,7 +9,7 @@ import { green } from "./helpers/colorize-log";
 /**
  * Deploy a contract using the specified parameters.
  *
- * @example (deploy contract with contructorArgs)
+ * @example (deploy contract with constructorArgs)
  * const deployScript = async (): Promise<void> => {
  *   await deployContract(
  *     {
@@ -25,7 +25,7 @@ import { green } from "./helpers/colorize-log";
  *   );
  * };
  *
- * @example (deploy contract without contructorArgs)
+ * @example (deploy contract without constructorArgs)
  * const deployScript = async (): Promise<void> => {
  *   await deployContract(
  *     {
@@ -45,21 +45,22 @@ const deployScript = async (): Promise<void> => {
   await deployContract({
     contract: "YourCollectible",
     constructorArgs: {
-      owner: deployer.address, // the deployer address is the owner of the contract
+      owner: deployer.address,
     },
   });
 };
 
-deployScript()
-  .then(async () => {
-    executeDeployCalls()
-      .then(() => {
-        exportDeployments();
-        console.log(green("All Setup Done"));
-      })
-      .catch((e) => {
-        console.error(e);
-        process.exit(1); // exit with error so that non subsequent scripts are run
-      });
-  })
-  .catch(console.error);
+const main = async (): Promise<void> => {
+  try {
+    await deployScript();
+    await executeDeployCalls();
+    exportDeployments();
+
+    console.log(green("All Setup Done!"));
+  } catch (err) {
+    console.log(err);
+    process.exit(1); //exit with error so that non subsequent scripts are run
+  }
+};
+
+main();

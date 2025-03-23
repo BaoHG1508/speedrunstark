@@ -35,7 +35,6 @@
     "prettier": "^3.2.5"
   },
   "dependencies": {
-    "postcss": "^8.4.38",
-    "vercel": "latest"
+    "postcss": "^8.4.38"
   }
 }

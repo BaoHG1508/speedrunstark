@@ -17,7 +17,7 @@ const Staking: NextPage = () => {
     contractName: "Staker",
     eventName: "contracts::Staker::Staker::Stake",
     watch: true,
-    fromBlock: 617000n,
+    fromBlock: 0n,
   });
   console.log(stakeEvents);
 

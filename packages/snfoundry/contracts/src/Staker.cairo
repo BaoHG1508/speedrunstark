@@ -194,7 +194,6 @@ pub mod Staker {
             let token_dispatcher = self.eth_token_dispatcher.read();
             token_dispatcher.transfer(external_contract, amount);
 
-            // Create dispatcher for external contract
             let external_dispatcher = IExampleExternalContractDispatcher { contract_address: external_contract };
             external_dispatcher.complete();
 

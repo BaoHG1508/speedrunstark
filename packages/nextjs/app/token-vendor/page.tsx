@@ -80,8 +80,6 @@ const TokenVendor: NextPage = () => {
     ],
   });
 
-  console.log(tokensToSell)
-
   const { sendAsync: sell } = useScaffoldMultiWriteContract({
     calls: [
       {

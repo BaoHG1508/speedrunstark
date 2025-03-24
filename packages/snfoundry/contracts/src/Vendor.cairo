@@ -95,7 +95,7 @@ mod Vendor {
         // ToDo Checkpoint 2: Implement your function withdraw here.
 
         fn withdraw(ref self: ContractState) {
-            assert(self.ownable.owner() == get_caller_address(), 'Not authorized');
+            assert(self.ownable.owner() == get_caller_address(), 'Caller is not the owner');
             assert(self.eth_token.read().balanceOf(get_contract_address()) > 0, 'Not enough eth');
 
             self.eth_token.read().transfer(get_caller_address(), self.eth_token.read().balanceOf(get_contract_address()));

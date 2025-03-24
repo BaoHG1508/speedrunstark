@@ -79,14 +79,19 @@ mod Vendor {
         fn buy_tokens(
             ref self: ContractState, eth_amount_wei: u256,
         ) { // Note: In UI and Debug contract `buyer` should call `approve`` before to `transfer` the amount to the `Vendor` contract.            
-            assert(self.eth_token.read().balanceOf(get_caller_address()) >= eth_amount_wei, 'Not enough eth');
-            assert(self.your_token.read().balance_of(get_contract_address()) >= eth_amount_wei * TokensPerEth, 'Not enough tokens');
+            let caller = get_caller_address();
+            let contract_address = get_contract_address();
+            let eth_token = self.eth_token.read();
+            let your_token = self.your_token.read();
+            
+            assert(eth_token.balanceOf(caller) >= eth_amount_wei, 'Not enough eth');
+            assert(your_token.balance_of(contract_address) >= eth_amount_wei * TokensPerEth, 'Not enough tokens');
 
-            self.eth_token.read().transferFrom(get_caller_address(), get_contract_address(), eth_amount_wei);
-            self.your_token.read().transfer(get_caller_address(), eth_amount_wei * TokensPerEth);
+            self.eth_token.read().transferFrom(caller, contract_address, eth_amount_wei);
+            self.your_token.read().transfer(caller, eth_amount_wei * TokensPerEth);
 
             self.emit(BuyTokens {
-                buyer: get_caller_address(),
+                buyer: caller,
                 eth_amount: eth_amount_wei,
                 tokens_amount: eth_amount_wei * TokensPerEth,
             });
@@ -95,10 +100,13 @@ mod Vendor {
         // ToDo Checkpoint 2: Implement your function withdraw here.
 
         fn withdraw(ref self: ContractState) {
-            assert(self.ownable.owner() == get_caller_address(), 'Caller is not the owner');
-            assert(self.eth_token.read().balanceOf(get_contract_address()) > 0, 'Not enough eth');
+            let caller = get_caller_address();
+            let contract_address = get_contract_address();
 
-            self.eth_token.read().transfer(get_caller_address(), self.eth_token.read().balanceOf(get_contract_address()));
+            assert(self.ownable.owner() == caller, 'Caller is not the owner');
+            assert(self.eth_token.read().balanceOf(contract_address) > 0, 'Not enough eth');
+
+            self.eth_token.read().transfer(caller, self.eth_token.read().balanceOf(contract_address));
         }
 
         // ToDo Checkpoint 3: Implement your function sell_tokens here.

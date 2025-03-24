@@ -2,6 +2,7 @@ use starknet::ContractAddress;
 #[starknet::interface]
 pub trait IVendor<T> {
     fn buy_tokens(ref self: T, eth_amount_wei: u256);
+    fn withdraw(ref self: T);
     fn sell_tokens(ref self: T, amount_tokens: u256);
     fn tokens_per_eth(self: @T) -> u256;
     fn your_token(self: @T) -> ContractAddress;
@@ -89,6 +90,15 @@ mod Vendor {
                 eth_amount: eth_amount_wei,
                 tokens_amount: eth_amount_wei * TokensPerEth,
             });
+        }
+
+        // ToDo Checkpoint 2: Implement your function withdraw here.
+
+        fn withdraw(ref self: ContractState) {
+            assert(self.ownable.owner() == get_caller_address(), 'Not authorized');
+            assert(self.eth_token.read().balanceOf(get_contract_address()) > 0, 'Not enough eth');
+
+            self.eth_token.read().transfer(get_caller_address(), self.eth_token.read().balanceOf(get_contract_address()));
         }
 
         // ToDo Checkpoint 3: Implement your function sell_tokens here.

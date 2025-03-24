@@ -103,7 +103,6 @@ mod Vendor {
 
         // ToDo Checkpoint 3: Implement your function sell_tokens here.
         fn sell_tokens(ref self: ContractState, amount_tokens: u256) {
-            // Input validation
             assert(amount_tokens > 0, 'Amount must be greater than 0');
 
             // Calculate ETH amount to return

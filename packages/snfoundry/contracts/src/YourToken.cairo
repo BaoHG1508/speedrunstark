@@ -36,6 +36,13 @@ mod YourToken {
     enum Event {
         #[flat]
         ERC20Event: ERC20Component::Event,
+        BuyTokens: BuyTokens,
+    }
+
+    #[derive(Drop, starknet::Event)]
+    struct BuyTokens {
+        #[key]
+        buyer: ContractAddress, eth_amount: u256, tokens_amount: u256
     }
 
 
@@ -46,9 +53,12 @@ mod YourToken {
         let symbol = "GLD";
         self.erc20.initializer(name, symbol);
         // Todo Checkpoint 1: Uncomment to set `fixed_supply`.
-    // let fixed_supply: u256 = 2_000_000_000_000_000_000_000; //2000 * 10^18
-    // Todo Checkpoint 1: Call "fn mint()" `fixed_supply` tokens to `recipient`.
+        let fixed_supply: u256 = 2_000_000_000_000_000_000_000; //2000 * 10^18
+        // Todo Checkpoint 1: Call "fn mint()" `fixed_supply` tokens to `recipient`.
+        self.erc20.mint(recipient, fixed_supply);
     }
+
+
 
     #[abi(embed_v0)]
     impl IYourTokenImpl of IERC20<ContractState> {

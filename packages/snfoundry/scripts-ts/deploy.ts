@@ -18,25 +18,17 @@ const deployScript = async (): Promise<void> => {
         "0x49D36570D4E46F48E99674BD3FCC84644DDD6B96F7C741B1562B82F9E004DC7",
     },
   });
-  const ethAbi = preDeployedContracts.devnet.Eth.abi as Abi;
-  const ethAddress = preDeployedContracts.devnet.Eth.address as `0x${string}`;
 
-  const ethContract = new Contract(ethAbi, ethAddress, deployer);
-
-  // 0.05 Eth
-  const ethAmount = 50000000000000000n;
-
-  const tx = await ethContract.invoke("transfer", [diceGameAddr, ethAmount]);
-  const receipt = await provider.waitForTransaction(tx.transaction_hash);
+  // I don't have that much ETH in my wallet, so I'm not going send ETH to the DiceGame contract
 
   // ToDo Checkpoint 2: Deploy RiggedRoll contract
-  //   await deployContract({
-  //     contract: "RiggedRoll",
-  //     constructorArgs: {
-  //       dice_game_address: diceGameAddr,
-  //       owner: deployer.address,
-  //     },
-  //   });
+  await deployContract({
+    contract: "RiggedRoll",
+    constructorArgs: {
+      dice_game_address: diceGameAddr,
+      owner: deployer.address,
+    },
+  });
 };
 
 deployScript()

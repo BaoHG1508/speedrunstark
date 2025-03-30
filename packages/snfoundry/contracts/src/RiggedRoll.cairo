@@ -66,7 +66,7 @@ mod RiggedRoll {
             self.predicted_roll.write(roll);
 
             if (roll > 5) {
-                return;
+                assert(false, 'Roll is not a win');
             }
 
             dice_game.roll_dice(amount);

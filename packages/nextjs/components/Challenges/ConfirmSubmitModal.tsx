@@ -35,7 +35,7 @@ export const ConfirmSubmitModal = ({
             width={40}
             height={40}
           />
-          <p className="text-center">Are you sure to sumbit your challenge?</p>
+          <p className="text-center">Are you sure to submit your challenge?</p>
         </div>
         <div className="flex items-center gap-2.5 px-1">
           <div

@@ -66,9 +66,11 @@ mod RiggedRoll {
             self.predicted_roll.write(roll);
 
             if (roll > 5) {
+                self.dice_game.read().eth_token_dispatcher().transfer(get_caller_address(), amount);
                 assert(false, 'Roll is not a win');
             }
 
+            self.approve_dice_game(amount);
             dice_game.roll_dice(amount);
         }
 

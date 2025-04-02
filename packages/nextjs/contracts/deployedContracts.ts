@@ -243,7 +243,7 @@ const deployedContracts = {
   sepolia: {
     DiceGame: {
       address:
-        "0x58e9a93b5eb1e94b7515e7077a0871aaa588c2a89843b0a57c7ff6ce0b53167",
+        "0x4f7cedffa7e056ab3df1f7471efc157c6cd16ed694eef854749ba3f13fdfb49",
       abi: [
         {
           type: "impl",
@@ -404,11 +404,11 @@ const deployedContracts = {
         },
       ],
       classHash:
-        "0x78b9856b5d4aeea5e79ec2a244e2217f73e79874d836ff6ccd4c58d52ab97c2",
+        "0x5c72650450d8f93a8440cf6950d28665dcb7ddfbe275687be3b00b27ca2f4bb",
     },
     RiggedRoll: {
       address:
-        "0x23ecb9992fdd59cd93aa3e18dd53b4a8937a6f53f3cb829960037ae0cac1512",
+        "0x471e765a3c3d5faa9e1b965c6e7e9cc30b06af3082709909221b83fb8767d93",
       abi: [
         {
           type: "impl",
@@ -638,7 +638,7 @@ const deployedContracts = {
         },
       ],
       classHash:
-        "0x25e0897aefc37f576828dcd06f9dee5ab32c53bd53f9e3bcb3b3700b74f23e2",
+        "0x5f11e424dcd25fc38e3f6ce64f1fbcb24454ab54069bb2ec39300c7f43ec60c",
     },
   },
 } as const;

@@ -67,9 +67,6 @@ const DiceGame: NextPage = () => {
           riggedRollContract?.address,
           parseEther(ROLL_ETH_VALUE),
         ]),
-        createContractCall("RiggedRoll", "approve_dice_game", [
-          parseEther(ROLL_ETH_VALUE),
-        ]),
         createContractCall("RiggedRoll", "rigged_roll", [
           parseEther(ROLL_ETH_VALUE),
         ]),
